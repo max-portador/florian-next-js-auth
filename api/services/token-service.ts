@@ -75,7 +75,13 @@ class TokenService{
     }
 
     verifyAccessToken(accessToken: string){
-        return jwt.verify(accessToken, ATSecret) as AccessToken
+        try {
+            return jwt.verify(accessToken, ATSecret) as AccessToken
+        }
+        catch (e) {
+            
+        }
+        
     }
 
     isNotExpired(token: RefreshToken){

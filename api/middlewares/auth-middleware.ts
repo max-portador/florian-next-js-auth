@@ -7,7 +7,7 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction){
 
     if (!token){
         res.status(401)
-        next(new Error('Unauthorized!'))
+        return next(new Error('Unauthorized!'))
     }
 
     res.locals.token = token

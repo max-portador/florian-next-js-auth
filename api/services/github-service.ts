@@ -1,19 +1,10 @@
 import axios from "axios"
 import * as dotenv from "dotenv";
+import {Octokit} from "octokit";
 dotenv.config({path: '.env.development'})
-
-interface GitHubUser {
-    id: number
-    name: string
-}
 
 interface AccessTokenResponse {
     access_token: string
-}
-
-interface UserResponse {
-    id: number
-    name: string
 }
 
 const TOKEN_URL = 'https://github.com/login/oauth/access_token'
@@ -46,12 +37,17 @@ class githubService{
 
 
     async getUser(token: string) {
-        const response = await axios.get<UserResponse>(
-            USER_URL,
-            {
-                headers: {Authorization: `Bearer ${token}`}
-            })
-        return response.data as GitHubUser
+        const octokit = new Octokit({ auth: token });
+
+        try {
+            const res = await octokit.request('GET /user', {})
+            return res.data
+        }
+
+        catch (e) {
+            throw e
+        }
+
     }
 
 
